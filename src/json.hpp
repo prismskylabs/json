@@ -64,10 +64,23 @@ Class @ref nlohmann::basic_json is a good entry point for the documentation.
     #endif
 #endif
 
-// enable ssize_t for MSVC
 #ifdef _MSC_VER
+    // enable ssize_t for MSVC
     #include <basetsd.h>
     using ssize_t = SSIZE_T;
+
+    // enable msc extensions
+    #ifndef _MSC_EXTENSIONS
+    #define _MSC_EXTENSIONS 
+    #endif
+
+    #include <iso646.h>
+
+    // Disable noexcept
+    #ifdef _NOEXCEPT
+    #define noexcept _NOEXCEPT
+    #endif
+
 #endif
 
 /*!
@@ -7264,6 +7277,7 @@ namespace std
 /*!
 @brief exchanges the values of two JSON objects
 */
+#if !_MSC_VER
 template <>
 inline void swap(nlohmann::json& j1,
                  nlohmann::json& j2) noexcept(
@@ -7273,6 +7287,14 @@ inline void swap(nlohmann::json& j1,
 {
     j1.swap(j2);
 }
+#else
+template <>
+inline void swap(nlohmann::json& j1,
+                 nlohmann::json& j2)
+{
+    j1.swap(j2);
+}
+#endif
 
 /// hash value for JSON objects
 template <>
@@ -7298,10 +7320,12 @@ no parse error occurred.
 @param[in] s  a string representation of a JSON object
 @return a JSON object
 */
+#if !_MSC_VER
 inline nlohmann::json operator "" _json(const char* s, std::size_t)
 {
     return nlohmann::json::parse(reinterpret_cast<nlohmann::json::string_t::value_type*>
                                  (const_cast<char*>(s)));
 }
+#endif
 
 #endif
