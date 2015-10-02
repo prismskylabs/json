@@ -1673,6 +1673,7 @@ class basic_json
     copy of `a` (which is the null value after the swap) is
     destroyed.,basic_json__copyassignment}
     */
+#if !_MSC_VER
     reference& operator=(basic_json other) noexcept (
         std::is_nothrow_move_constructible<value_t>::value and
         std::is_nothrow_move_assignable<value_t>::value and
@@ -1685,6 +1686,15 @@ class basic_json
         std::swap(m_value, other.m_value);
         return *this;
     }
+#else
+    reference& operator=(basic_json other) noexcept
+    {
+        using std::swap;
+        std::swap(m_type, other.m_type);
+        std::swap(m_value, other.m_value);
+        return *this;
+    }
+#endif
 
     /*!
     @brief destructor
@@ -3976,6 +3986,7 @@ class basic_json
     @liveexample{The example below shows how JSON arrays can be
     swapped.,swap__reference}
     */
+#if !_MSC_VER
     void swap(reference other) noexcept (
         std::is_nothrow_move_constructible<value_t>::value and
         std::is_nothrow_move_assignable<value_t>::value and
@@ -3986,6 +3997,13 @@ class basic_json
         std::swap(m_type, other.m_type);
         std::swap(m_value, other.m_value);
     }
+#else
+    void swap(reference other) noexcept
+    {
+        std::swap(m_type, other.m_type);
+        std::swap(m_value, other.m_value);
+    }
+#endif
 
     /*!
     @brief exchanges the values
@@ -5056,6 +5074,7 @@ class basic_json
         {}
 
         /// copy assignment
+#if !_MSC_VER
         const_iterator& operator=(const_iterator other) noexcept(
             std::is_nothrow_move_constructible<pointer>::value and
             std::is_nothrow_move_assignable<pointer>::value and
@@ -5067,6 +5086,14 @@ class basic_json
             std::swap(m_it, other.m_it);
             return *this;
         }
+#else
+        const_iterator& operator=(const_iterator other) noexcept
+        {
+            std::swap(m_object, other.m_object);
+            std::swap(m_it, other.m_it);
+            return *this;
+        }
+#endif
 
       private:
         /// set the iterator to the first value
@@ -5506,6 +5533,7 @@ class basic_json
         {}
 
         /// copy assignment
+#if !_MSC_VER
         iterator& operator=(iterator other) noexcept(
             std::is_nothrow_move_constructible<pointer>::value and
             std::is_nothrow_move_assignable<pointer>::value and
@@ -5516,6 +5544,13 @@ class basic_json
             base_iterator::operator=(other);
             return *this;
         }
+#else
+        iterator& operator=(iterator other) noexcept
+        {
+            base_iterator::operator=(other);
+            return *this;
+        }
+#endif
 
         /// return a reference to the value pointed to by the iterator
         reference operator*()
