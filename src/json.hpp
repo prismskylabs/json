@@ -81,7 +81,9 @@ Class @ref nlohmann::basic_json is a good entry point for the documentation.
     #define noexcept _NOEXCEPT
     #endif
 
+
 #endif
+#define constexpr const
 
 /*!
 @brief namespace for Niels Lohmann
