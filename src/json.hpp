@@ -838,7 +838,13 @@ class basic_json
 
     @sa basic_json(std::nullptr_t)
     */
+#if !_MSC_VER
     basic_json() noexcept = default;
+#else
+    basic_json() noexcept
+        : basic_json(value_t::null)
+    {}
+#endif
 
     /*!
     @brief create a null object (explicitly)
