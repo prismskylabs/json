@@ -618,7 +618,11 @@ class basic_json
         number_float_t number_float;
 
         /// default constructor (for null values)
+#if !_MSC_VER
         json_value() noexcept = default;
+#else
+        json_value() noexcept {};
+#endif
         /// constructor for booleans
         json_value(boolean_t v) noexcept : boolean(v) {}
         /// constructor for numbers (integer)
