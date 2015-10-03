@@ -80,10 +80,9 @@ Class @ref nlohmann::basic_json is a good entry point for the documentation.
     #ifdef _NOEXCEPT
     #define noexcept _NOEXCEPT
     #endif
-
+    #define constexpr const
 
 #endif
-#define constexpr const
 
 /*!
 @brief namespace for Niels Lohmann
