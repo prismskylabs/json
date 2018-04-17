@@ -1308,7 +1308,8 @@ class basic_json
 
             for (auto& element : init)
             {
-                m_value.object->emplace(std::move(*(element[0].m_value.string)), std::move(element[1]));
+//                m_value.object->emplace(std::move(*(element[0].m_value.string)), std::move(element[1]));
+                m_value.object->insert(std::make_pair(std::move(*(element[0].m_value.string)), std::move(element[1])));
             }
         }
         else
