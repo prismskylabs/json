@@ -1308,7 +1308,12 @@ class basic_json
 
             for (auto& element : init)
             {
-//                m_value.object->emplace(std::move(*(element[0].m_value.string)), std::move(element[1]));
+                // MIPS compiler is based on GNU gcc 4.7.2. However,
+                // emplace() was introduced in 4.8.0
+                // So we need this workaround
+                // emplace(a, b) --> insert(std::make_pair(a, b))
+
+                // m_value.object->emplace(std::move(*(element[0].m_value.string)), std::move(element[1]));
                 m_value.object->insert(std::make_pair(std::move(*(element[0].m_value.string)), std::move(element[1])));
             }
         }
